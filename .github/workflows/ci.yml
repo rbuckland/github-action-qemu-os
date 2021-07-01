@@ -31,9 +31,7 @@ jobs:
         run: qemu-img create -f qcow2 ./build/packer-ubuntu-21.04-live-server.qcow2 7G
       -
         name: Python Web Server
-        run: |
-           python3 -m http.server 3003 --directory subiquity/http & ;\
-           export WEBPID=$!
+        run: python3 -m http.server 3003 --directory subiquity/http &
       -
         name: Build OS
         run: |
@@ -54,6 +52,5 @@ jobs:
             -append 'autoinstall ds=nocloud-net;s=http://_gateway:3003/ console=ttyS0'
       - 
         name: Final
-        run: |
-            ls -al . build ; kill ${WEBPID}
+        run: ls -al . build && killall python3
 
