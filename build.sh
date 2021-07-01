@@ -19,7 +19,7 @@ qemu-img create -f qcow2 ./build/${serverqcow2} 5G
 
 # 4. spin up a config server
 echo "::prepare name=cloud-init::webserverrunning" 
-python3 -m http.server 3003 --directory subiquity/http
+python3 -m http.server 3003 --directory subiquity/http &
 WEBPID=$!
 
 echo "::build name=qemu::building" 
