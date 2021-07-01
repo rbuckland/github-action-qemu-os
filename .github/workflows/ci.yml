@@ -1,11 +1,11 @@
 name: ci
 
 on:
-  push:
 
 jobs:
   qemu:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       # - name: Maximize build space
       #   uses: easimon/maximize-build-space@master
@@ -18,19 +18,41 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
+      
       -
-        name: Set up QEMU
-        id: qemu
-        uses: docker/setup-qemu-action@v1
-        with:
-          image: tonistiigi/binfmt:latest
-          platforms: all
+        name: Install QEMU
+        run: sudo apt-get install qemu-utils qemu-system-x86
       -
-        name: Available platforms
-        run: echo ${{ steps.qemu.outputs.platforms }} && sudo apt-get install qemu-utils qemu-system-x86
+        name: Curl ISO
+        run: curl -L -o build/ubuntu-21.04-live-server-amd64.iso https://releases.ubuntu.com/21.04/ubuntu-21.04-live-server-amd64.iso
+      -
+        name: Create QCOW
+        run: qemu-img create -f qcow2 ./build/packer-ubuntu-21.04-live-server.qcow2 7G
+      -
+        name: Python Web Server
+        run: |
+           python3 -m http.server 3003 --directory subiquity/http &;
+           export WEBPID=$!
       -
         name: Build OS
-        run: ./build.sh
-      -
-        name: Check
-        run: ls -al
+        run: |
+          qemu-system-x86_64 \
+            -boot d \
+            -no-reboot \
+            -vga virtio \
+            -drive file=build/ubuntu-21.04-live-server-amd64.iso,media=cdrom \
+            -machine type=pc,accel=tcg \
+            -m 2048M \
+            -nographic \
+            -display none \
+            -drive file=./build/packer-ubuntu-21.04-live-server.qcow2,if=virtio,cache=writeback,discard=ignore,format=qcow2 \
+            -netdev user,id=user.0,hostfwd=tcp::7722-:22 \
+            -device virtio-net,netdev=user.0 \
+            -kernel ./vmlinuz \
+            -initrd ./initrd \
+            -append 'autoinstall ds=nocloud-net;s=http://_gateway:3003/ console=ttyS0'
+      - 
+        name: Final
+        run: |
+            ls -al . build ; kill ${WEBPID}
+
