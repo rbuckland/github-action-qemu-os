@@ -15,12 +15,15 @@ curl -L -o build/${iso} https://releases.ubuntu.com/${version}/${iso}
 # 3. create a disk 
 
 echo "::prepare name=QCOW::Created" 
-qemu-img create -f qcow2 ./build/${serverqcow2} 5G
+qemu-img create -f qcow2 ./build/${serverqcow2} 7G
+
+df -h
 
 # 4. spin up a config server
 echo "::prepare name=cloud-init::webserverrunning" 
 python3 -m http.server 3003 --directory subiquity/http &
 WEBPID=$!
+netstat -an
 
 echo "::build name=qemu::building" 
 # 5. boot the installer
