@@ -32,7 +32,7 @@ qemu-system-x86_64 \
     -machine type=pc,accel=tcg \
     -m 2048M \
     -nographic \
-    -display curses,show-cursor=on \
+    -display curses \
     -drive file=./build/${serverqcow2},if=virtio,cache=writeback,discard=ignore,format=qcow2 \
     -netdev user,id=user.0,hostfwd=tcp::7722-:22 \
     -device virtio-net,netdev=user.0 \
