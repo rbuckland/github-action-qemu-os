@@ -32,7 +32,7 @@ jobs:
       -
         name: Python Web Server
         run: |
-           python3 -m http.server 3003 --directory subiquity/http &;
+           python3 -m http.server 3003 --directory subiquity/http & ;\
            export WEBPID=$!
       -
         name: Build OS
