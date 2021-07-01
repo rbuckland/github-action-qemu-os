@@ -2,8 +2,8 @@
 
 mkdir build/
 
-serverqcow2=packer-ubuntu-21.04-live-server.qcow2
-version=21.04
+version=20.04
+serverqcow2=packer-ubuntu-${version}-live-server.qcow2
 iso=ubuntu-${version}-live-server-amd64.iso
 
 # 1. download ISO 

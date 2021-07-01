@@ -13,7 +13,9 @@ autoinstall:
           dhcp4: true
   storage:
     layout:
-      name: lvm
+      name: direct
+    swap:
+      size: 0
   identity:
     hostname: ubuntu
     username: ubuntu

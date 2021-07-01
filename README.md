@@ -29,4 +29,10 @@ kvm -no-reboot -name auto-inst-test -nographic -m 2048 \
     -kernel ~/iso/boot/kernel.ubuntu \
     -initrd ~/iso/boot/initrd.ubuntu \
     -append 'autoinstall ds=nocloud-net;s=http://_gateway:3003/ console=ttysclp0'
-```# github-action-qemu-os
+```
+
+
+## Things
+
+Disks 
+- https://www.aerialls.io/posts/ubuntu-server-2004-image-packer-subiquity-for-proxmox/
