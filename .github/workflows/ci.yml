@@ -19,7 +19,7 @@ jobs:
           platforms: all
       -
         name: Available platforms
-        run: echo ${{ steps.qemu.outputs.platforms }} && sudo apt-get install qemu-utils
+        run: echo ${{ steps.qemu.outputs.platforms }} && sudo apt-get install qemu-utils qemu-system-x86
       -
         name: Build OS
         run: ./build.sh
