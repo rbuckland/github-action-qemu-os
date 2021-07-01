@@ -6,7 +6,6 @@ NOTES.md
 centos8
 centos8.json
 help.mk
-initrd
 simple-ubuntu.json
 test-boot.sh
 test-install-qemu.sh
@@ -14,4 +13,3 @@ ubuntu-20.04-live-server-packer.json
 ubuntu-20.04-live-server-packer2.json
 ubuntu-21.04-live-server-amd64.iso
 ubuntu-server.json
-vmlinuz
