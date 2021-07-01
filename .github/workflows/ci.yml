@@ -23,3 +23,6 @@ jobs:
       -
         name: Build OS
         run: ./build.sh
+      -
+        name: Check
+        run: ls -al

@@ -5,20 +5,24 @@ mkdir build/
 serverqcow2=packer-ubuntu-21.04-live-server.qcow2
 version=21.04
 iso=ubuntu-${version}-live-server-amd64.iso
-# 1. download ISO 
 
+# 1. download ISO 
+echo "::prepare name=ISO::Downloading" 
 curl -L -o build/${iso} https://releases.ubuntu.com/${version}/${iso}
 
 # 2. extract kernel 
 
 # 3. create a disk 
 
+echo "::prepare name=QCOW::Created" 
 qemu-img create -f qcow2 ./build/${serverqcow2} 5G
 
 # 4. spin up a config server
+echo "::prepare name=cloud-init::webserverrunning" 
 python3 -m http.server 3003 --directory subiquity/http
 WEBPID=$!
 
+echo "::build name=qemu::building" 
 # 5. boot the installer
 qemu-system-x86_64 \
     -boot d \
@@ -35,6 +39,8 @@ qemu-system-x86_64 \
     -kernel ./vmlinuz \
     -initrd ./initrd \
     -append 'autoinstall ds=nocloud-net;s=http://_gateway:3003/ console=ttyS0'
+
+echo "::build name=qemu::finished" 
 
 # 4. md5sum the final
 
