@@ -21,8 +21,8 @@ jobs:
         uses: actions/checkout@v2
       
       -
-        name: Install QEMU
-        run: sudo apt-get install qemu-utils qemu-system-x86
+        name: Prepare dir/qemu
+        run: sudo apt-get install qemu-utils qemu-system-x86; mkdir build/
       -
         name: Curl ISO
         run: curl -L -o build/ubuntu-21.04-live-server-amd64.iso https://releases.ubuntu.com/21.04/ubuntu-21.04-live-server-amd64.iso
